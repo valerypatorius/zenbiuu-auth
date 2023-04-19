@@ -95,7 +95,7 @@
   (function() {
     const link = document.getElementById('link');
 
-    const token = getAccessTokenUrl(window.location);
+    const token = getAccessTokenUrl(window.location.href);
     const url = `zenbiuu://open?token=${token}`;
 
     link.href = url;
