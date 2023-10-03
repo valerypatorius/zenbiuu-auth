@@ -94,12 +94,18 @@
 </main>
 
 <script>
-  function getAccessTokenFromUrl (url) {
+  function getPayloadFromUrl (url) {
     try {
       const urlObject = new URL(window.location.href.replace('#', '?'));
-      const result = urlObject.searchParams.get('access_token');
+      const token = urlObject.searchParams.get('access_token');
+      const state = urlObject.searchParams.get('state');
+      const expiresIn = urlObject.searchParams.get('expires_in');
 
-      return result;
+      return {
+        token,
+        state,
+        expiresIn,
+      };
     } catch {
       return null;
     }
@@ -108,13 +114,13 @@
   (function() {
     const main = document.getElementById('main');
     const button = document.getElementById('button');
-    const token = getAccessTokenFromUrl();
+    const payload = getPayloadFromUrl();
 
-    if (token === null) {
+    if (payload.token === null) {
       return;
     }
 
-    const appLink = `zenbiuu://auth?token=${token}`;
+    const appLink = `zenbiuu://auth?token=${payload.token}&state=${payload.state}&expiresIn=${payload.expiresIn}`;
 
     button.href = appLink;
     button.innerText = 'Open Zenbiuu';
